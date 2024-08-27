@@ -1,0 +1,52 @@
+syntax= "proto3";
+option go_package= "/protoc";
+package proto;
+service Public{
+
+  // 获取人机校验接口
+  rpc GetCaptcha(PublicReq) returns(GetCaptchaRsp){};
+  // 人机校验校验接口
+  rpc PostCaptcha(PostCaptchaReq) returns(PublicRsp){};
+  // 获取国家列表接口
+  rpc GetCountry(PublicReq) returns(GetCountryRsp){};
+}
+
+message PublicReq{
+}
+
+message GetCaptchaRsp {
+  int32 code = 1; // 错误码
+  string message = 2; // 错误信息
+  Data data = 3; // 返回数据
+  message Data{
+    string captcha_key = 1; // key
+    string image_base64 = 2; // 背景图片
+    string tile_base64 = 3; // 碎片图片
+    int32 tile_width = 4; // 宽
+    int32 tile_height = 5; // 高
+    int32 tile_x = 6; // x坐标
+    int32 tile_y = 7; // y坐标
+  }
+}
+message GetCountryRsp{
+  int32 code = 1;
+  string message = 2;
+  repeated Data data = 3;
+  message Data {
+    string id = 1;          // id
+    string name = 2;        // 昵称
+    string chinese_name = 3; // 中文昵称
+    string start_char = 4;  // 开头字符
+    string telephone_code = 5; // 区号
+  }
+}
+message PublicRsp {
+  int32 code = 1; // 错误码
+  string message = 2; // 错误信息
+  Data data = 3; // 返回数据
+  message Data{}
+}
+message PostCaptchaReq{
+  string point = 1; // 坐标
+  string key = 2; // key
+}

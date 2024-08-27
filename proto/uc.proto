@@ -1,0 +1,75 @@
+syntax= "proto3";
+option go_package= "/protoc";
+package proto;
+service Uc{
+
+  // 获取邮箱注册验证码
+  rpc GetEmailCode(GetEmailCodeReq) returns(UcRsp){};
+  // 校验邮箱注册验证码
+  rpc PostEmailCode(PostEmailCodeReq) returns(UcRsp){};
+  // 注册
+  rpc Register(RegisterReq) returns(LoginRsp){};
+  // 登录
+  rpc Login(LoginReq) returns(LoginRsp){};
+  // 获取个人信息
+  rpc GetUserInfo(GetUserInfoReq) returns(GetUserInfoRsp){};
+}
+
+message GetUserInfoReq{
+  int64 uid = 1;
+}
+
+message GetEmailCodeReq{
+  string key = 1;
+  int32 behavior = 2;
+  string email = 3;
+}
+
+message PostEmailCodeReq{
+  string code = 1;
+  int32 behavior = 2;
+  string email = 3;
+}
+
+message RegisterReq{
+  string country_id = 1;
+  string email = 2;
+  string password = 3;
+  string verification_code = 4;
+}
+message LoginReq{
+  string email = 1;
+  string password = 2;
+}
+
+message UcRsp {
+  int32 code = 1; // 错误码
+  string message = 2; // 错误信息
+  Data data = 3; // 返回数据
+  message Data{}
+}
+
+message LoginRsp{
+  int32 code = 1; // 错误码
+  string message = 2; // 错误信息
+  Data data = 3; // 返回数据
+  message Data{
+    int64 uid = 1; //  uid
+    string username = 2;
+    string email = 3;
+    string access_token = 4;
+    string refresh_token = 5;
+  }
+}
+
+message GetUserInfoRsp{
+  int32 code = 1; // 错误码
+  string message = 2; // 错误信息
+  Data data = 3; // 返回数据
+  message Data{
+    int64 uid = 1; //  uid
+    string username = 2;
+    string email = 3;
+    string country_id = 4;
+  }
+}
